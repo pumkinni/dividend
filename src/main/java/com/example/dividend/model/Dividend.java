@@ -1,5 +1,6 @@
 package com.example.dividend.model;
 
+import com.example.dividend.persist.entity.DividendEntity;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,4 +12,5 @@ public class Dividend {
 
     private LocalDateTime date;
     private String dividend;
+
 }
