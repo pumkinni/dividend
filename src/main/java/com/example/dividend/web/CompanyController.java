@@ -19,7 +19,8 @@ public class CompanyController {
     // 자동 완성 기능을 위한 키워드 조회
     @GetMapping("/autocomplete")
     public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
-        return null;
+        var result = this.companyService.getCompanyNamesByKeyword(keyword);
+        return ResponseEntity.ok(result);
     }
 
     // 회사 리스트 조회
@@ -38,6 +39,7 @@ public class CompanyController {
         }
 
         Company company = this.companyService.save(ticker);
+        this.companyService.addAutocompleteKeyword(company.getName());
 
         return ResponseEntity.ok(company);
     }
