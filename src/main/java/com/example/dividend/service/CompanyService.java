@@ -8,6 +8,8 @@ import com.example.dividend.persist.entity.CompanyEntity;
 import com.example.dividend.persist.entity.DividendEntity;
 import com.example.dividend.scraper.Scraper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -21,6 +23,7 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final DividendRepository dividendRepository;
 
+    // ticker 를 통해 회사, 배당금 정보 저장
     public Company save(String ticker) {
         boolean exist = this.companyRepository.existsByTicker(ticker);
 
@@ -29,6 +32,10 @@ public class CompanyService {
             throw new RuntimeException("already exists ticker -> " + ticker);
         }
         return storeCompanyAndDividend(ticker);
+    }
+
+    public Page<CompanyEntity> getAllCompany(Pageable pageable){
+        return this.companyRepository.findAll(pageable);
     }
 
     private Company storeCompanyAndDividend(String ticker) {
