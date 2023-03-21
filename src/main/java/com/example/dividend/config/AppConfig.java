@@ -10,7 +10,7 @@ public class AppConfig {
 
     // 싱글톤 빈
     @Bean
-    public Trie<String, String> trie(){
+    public Trie<String, String> trie() {
         return new PatriciaTrie<>();
     }
 }
