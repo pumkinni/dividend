@@ -33,6 +33,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(token) && this.tokenProvider.validateToken(token)) {
             Authentication auth = this.tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+            // 어떤 사용자가 어떤 경로 접근했는지 확인
+            log.info(String.format("[%s] -> %s", this.tokenProvider.getUsername(token), request.getRequestURI()));
         }
 
         // 유효하지 않다면
