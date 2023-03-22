@@ -1,11 +1,14 @@
 package com.example.dividend.security;
 
+import com.example.dividend.service.MemberService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -17,6 +20,8 @@ import java.util.List;
 public class TokenProvider {
     private static final long TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 3; // 3 hour
     private static final String KEY_ROLES = "roles";
+
+    private final MemberService memberService;
 
     @Value("{spring.jwt.secret}")
     private String secretKey;
@@ -30,13 +35,17 @@ public class TokenProvider {
         var now = new Date();
         var expiredDate = new Date(now.getTime() + TOKEN_EXPIRE_TIME);
 
-        Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now) // 토큰 생성 시간
                 .setExpiration(expiredDate) // 토큰 만료 시간
                 .signWith(SignatureAlgorithm.HS512, this.secretKey) // 사용할 암호화 알고리즘, 비밀키
                 .compact();
-        return null;
+    }
+
+    public UsernamePasswordAuthenticationToken getAuthentication(String jwt){
+        UserDetails userDetails = this.memberService.loadUserByUsername(this.getUsername(jwt));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()); // 사용자 정보와 사용자 권한 정보를 포함하는 토큰 생성
     }
 
     public String getUsername(String token) {
