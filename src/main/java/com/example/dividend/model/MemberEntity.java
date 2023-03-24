@@ -1,6 +1,6 @@
 package com.example.dividend.model;
 
-import com.example.dividend.config.IntegerArrayConverter;
+import com.example.dividend.config.StringArrayConverter;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,7 +28,7 @@ public class MemberEntity implements UserDetails {
     private String password;
 
 
-    @Convert(converter = IntegerArrayConverter.class)
+    @Convert(converter = StringArrayConverter.class)
     private List<String> roles;
 
     @Override

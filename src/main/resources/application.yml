@@ -26,6 +26,10 @@ spring:
   jwt:
     secret: c3ByaW5nLWJvb3QtZGl2aWRlbmQtcHJvamVjdC10dXRvcmlhbC1qd3Qtc2VjcmV0LWtleQo
 
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+
 scheduler:
   scrap:
     yahoo: "0 0 0 * * *"

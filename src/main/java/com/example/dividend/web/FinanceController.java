@@ -1,6 +1,7 @@
 package com.example.dividend.web;
 
 import com.example.dividend.service.FinanceService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +18,7 @@ public class FinanceController {
     private final FinanceService financeService;
 
     // 회사 별 배당금 조회
+    @ApiOperation("회사 별 배당금 조회 (읽기 권한 필요)")
     @GetMapping("/dividend/{companyName}")
     @PreAuthorize("hasRole('READ')")
     public ResponseEntity<?> searchFinance(@PathVariable String companyName) {
